@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrueBoard | 페달보드 시스템 디자인 & 쇼룸</title>
+    <title>TrueBoard Lab | 페달보드 시스템 커스텀 빌드 & 솔루션</title>
+    <!-- 파비콘 설정 -->
+    <link rel="icon" href="TrueBoard_Lab_Logo.png">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* 부드러운 스크롤을 위한 CSS 추가 설정 */
         html {
             scroll-behavior: smooth;
         }
@@ -23,7 +24,9 @@
 
     <header class="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900">
         <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#home" class="text-lg font-black tracking-wider uppercase text-white hover:text-emerald-400 transition">
+            <a href="#home" class="flex items-center gap-2 text-lg font-black tracking-wider uppercase text-white hover:text-emerald-400 transition">
+                <!-- 로고 이미지 추가 -->
+                <img src="TrueBoard_Lab_Logo.png" alt="TrueBoard Logo" class="h-8 w-auto">
                 TrueBoard Lab
             </a>
             <nav class="flex space-x-8 text-xs font-medium text-zinc-400">
@@ -61,12 +64,12 @@
         </div>
     </section>
 
+    <!-- (이하 나머지 섹션은 기존과 동일) -->
     <section id="showroom" class="py-48 max-w-6xl mx-auto px-6">
         <div class="mb-20 text-center">
             <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3">Showroom</h2>
             <p class="text-3xl font-extrabold text-white tracking-tight">최근 작업물</p>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             <div class="group cursor-pointer text-center">
                 <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-6 overflow-hidden relative group-hover:border-zinc-700 transition shadow-lg">
