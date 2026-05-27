@@ -3,763 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrueBoard Lab | 프리미엄 페달보드 셋업 & 커스텀 빌드</title>
+    <title>TrueBoard | 페달보드 시스템 디자인 & 쇼룸</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts (Noto Sans KR) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- 테마 및 기본 스타일 정의 --- */
-        :root {
-            --bg-main: #080808;
-            --bg-card: #121212;
-            --bg-card-hover: #1a1a1a;
-            --accent: #00f0ff;
-            --accent-dim: rgba(0, 240, 255, 0.1);
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --border: #222222;
-            --max-width: 1200px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-        }
-
-        body {
-            overflow-x: hidden;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        .container {
-            max-width: var(--max-width);
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 50px;
-            letter-spacing: -0.05em;
-        }
-
-        .section-title span {
-            color: var(--accent);
-        }
-
-        /* --- 헤더 & 네비게이션 --- */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(8, 8, 8, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 80px;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: -0.03em;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-
-        nav ul {
-            display: flex;
-            gap: 35px;
-        }
-
-        nav a {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--accent);
-        }
-
-        /* --- 메인 히어로 섹션 --- */
-        #hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding-top: 80px;
-            background: radial-gradient(circle at center, #111e24 0%, var(--bg-main) 70%);
-        }
-
-        #hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(0deg, var(--bg-main) 0%, transparent 100%);
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-        }
-
-        .hero-tag {
-            display: inline-block;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--accent);
-            background: var(--accent-dim);
-            padding: 6px 16px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(0, 240, 255, 0.2);
-        }
-
-        .hero-content h1 {
-            font-size: 3.8rem;
-            font-weight: 800;
-            line-height: 1.2;
-            letter-spacing: -0.04em;
-            margin-bottom: 25px;
-        }
-
-        .hero-content p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
-
-        .cta-btn {
-            display: inline-block;
-            background: var(--accent);
-            color: #000000;
-            padding: 16px 35px;
-            font-weight: 700;
-            border-radius: 4px;
-            font-size: 1rem;
-            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(0, 240, 255, 0.6);
-        }
-
-        /* --- 브랜드 소개 섹션 (About) --- */
-        #about {
-            padding: 120px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .about-text p {
-            color: var(--text-muted);
-            line-height: 1.75;
-            margin-bottom: 20px;
-            font-size: 1.05rem;
-        }
-
-        .about-highlight {
-            border-left: 3px solid var(--accent);
-            padding-left: 20px;
-            margin: 30px 0;
-        }
-
-        .about-highlight h4 {
-            font-size: 1.15rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .about-visual {
-            background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* 기하학적 오디오 이펙터 라인 아트 분위기 표현 */
-        .about-visual::after {
-            content: 'EFX MASTER BUILD';
-            font-size: 4rem;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.02);
-            position: absolute;
-            white-space: nowrap;
-            transform: rotate(-15deg);
-        }
-
-        .circuit-icon {
-            width: 80px;
-            height: 80px;
-            stroke: var(--accent);
-            opacity: 0.6;
-        }
-
-        /* --- 핵심 서비스 안내 섹션 --- */
-        #services {
-            padding: 120px 0;
-            background: linear-gradient(180deg, var(--bg-main) 0%, #0d0d0d 100%);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-
-        .service-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 45px 35px;
-            border-radius: 6px;
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            background: var(--bg-card-hover);
-        }
-
-        .service-icon {
-            font-size: 2.5rem;
-            margin-bottom: 25px;
-            color: var(--accent);
-            display: inline-block;
-        }
-
-        .service-card h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .service-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .service-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .service-tags span {
-            font-size: 0.75rem;
-            background: #1c1c1c;
-            padding: 4px 10px;
-            border-radius: 4px;
-            color: #d0d0d0;
-            border: 1px solid #2a2a2a;
-        }
-
-        /* --- 포트폴리오 쇼룸 섹션 --- */
-        #portfolio {
-            padding: 120px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-        }
-
-        .portfolio-item {
-            position: relative;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-            aspect-ratio: 16 / 10;
-        }
-
-        /* 실제 이미지를 넣을 때는 아래 .item-img 배경 대신 <img> 태그를 사용하시면 됩니다. */
-        .item-img {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #151515, #222);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.1);
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: transform 0.5s;
-        }
-
-        .portfolio-item:hover .item-img {
-            transform: scale(1.03);
-        }
-
-        .portfolio-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(transparent, rgba(0,0,0,0.95) 60%);
-            padding: 40px 30px 30px 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-
-        .portfolio-overlay h4 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .portfolio-overlay p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .routing-chain {
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-top: 10px;
-            background: rgba(0,0,0,0.4);
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.05);
-            display: inline-block;
-        }
-
-        /* --- 작업 프로세스 섹션 --- */
-        #process {
-            padding: 120px 0;
-            background: #0b0b0b;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            position: relative;
-        }
-
-        .step-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 35px 25px;
-            border-radius: 6px;
-            position: relative;
-        }
-
-        .step-num {
-            font-size: 3rem;
-            font-weight: 900;
-            color: rgba(0, 240, 255, 0.15);
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            line-height: 1;
-        }
-
-        .step-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            margin-top: 15px;
-        }
-
-        .step-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        /* --- 푸터 및 문의 섹션 --- */
-        footer {
-            padding: 100px 0 40px 0;
-            background: #050505;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 60px;
-            margin-bottom: 60px;
-        }
-
-        .footer-info h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .footer-info p {
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 30px;
-        }
-
-        .biz-details {
-            font-size: 0.9rem;
-            color: #888888;
-            line-height: 1.8;
-        }
-
-        .biz-details strong {
-            color: #cccccc;
-        }
-
-        .footer-contact {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-        }
-
-        .contact-box {
-            width: 100%;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        .contact-box p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .btn-kakao {
-            display: block;
-            width: 100%;
-            background: #fee500;
-            color: #000000;
-            padding: 14px;
-            font-weight: 700;
-            border-radius: 4px;
-            text-align: center;
-            transition: opacity 0.3s;
-        }
-
-        .btn-kakao:hover {
-            opacity: 0.9;
-        }
-
-        .btn-daangn {
-            display: block;
-            width: 100%;
-            background: #ff7e36;
-            color: #ffffff;
-            padding: 14px;
-            font-weight: 700;
-            border-radius: 4px;
-            text-align: center;
-            margin-top: 10px;
-            transition: opacity 0.3s;
-        }
-
-        .btn-daangn:hover {
-            opacity: 0.9;
-        }
-
-        .copyright {
-            border-top: 1px solid var(--border);
-            padding-top: 40px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #555555;
-        }
-
-        /* --- 반응형 미디어 쿼리 (모바일 대응) --- */
-        @media (max-width: 968px) {
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .process-steps {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            .hero-content h1 {
-                font-size: 2.8rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header nav {
-                display: none; /* 모바일 단순화를 위해 네비게이션 숨김 처리 (단일페이지 스크롤 유도) */
-            }
-            .hero-content h1 {
-                font-size: 2.3rem;
-            }
-            .hero-content p {
-                font-size: 1.1rem;
-            }
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
-            .process-steps {
-                grid-template-columns: 1fr;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            .section-title {
-                font-size: 2rem;
-            }
-        }
+        body { font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
     </style>
 </head>
-<body>
+<body class="bg-zinc-950 text-zinc-100 antialiased">
 
-    <!-- 헤더 영역 -->
-    <header>
-        <div class="container">
-            <div class="logo">TrueBoard <span>Lab</span></div>
-            <nav>
-                <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio">Showroom</a></li>
-                    <li><a href="#process">Process</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="text-lg font-black tracking-wider uppercase text-white">TrueBoard</div>
+            <nav class="flex space-x-6 text-xs font-medium text-zinc-400">
+                <a href="#showroom" class="hover:text-white transition">쇼룸</a>
+                <a href="#standards" class="hover:text-white transition">작업 기준</a>
+                <a href="#guide" class="hover:text-white transition">의뢰 안내</a>
             </nav>
         </div>
     </header>
 
-    <main>
-        <!-- 메인 히어로 섹션 -->
-        <section id="hero">
-            <div class="hero-content container">
-                <span class="hero-tag">Premium Custom Pedalboard Build</span>
-                <h1>무대 위에서 증명되는<br>완벽한 시그널 루팅</h1>
-                <p>방구석의 톤이 아닌, 거친 현장 라이브 환경에서 완벽하게 살아남는 안정성과 무결점 톤 밸런스를 빌드합니다.</p>
-                <a href="#contact" class="cta-btn">커스텀 셋업 문의하기</a>
+    <!-- Hero Section -->
+    <section class="relative py-28 md:py-36 overflow-hidden border-b border-zinc-900">
+        <div class="max-w-6xl mx-auto px-6 relative z-10 text-center md:text-left">
+            <span class="text-emerald-400 font-semibold tracking-widest text-xs uppercase block mb-3">System Design & Craftsmanship</span>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight max-w-3xl mb-6 text-white">
+                무대 위에서의 완벽한 몰입,< <br class="hidden md:block">논리적인 설계로 완성되는 페달보드
+            </h1>
+            <p class="text-zinc-400 text-sm md:text-base max-w-xl font-light leading-relaxed mb-8 mx-auto md:mx-0">
+                과장된 수식어 대신 철저한 신호 흐름 분석과 장시간의 라이브 실전 경험만을 담습니다. 연주자가 신뢰할 수 있는 가장 직관적이고 안정적인 시스템 레이아웃을 지향합니다.
+            </p>
+            <div class="flex justify-center md:justify-start gap-4">
+                <a href="#showroom" class="bg-white hover:bg-zinc-200 text-zinc-950 px-6 py-2.5 rounded text-xs font-semibold transition tracking-tight">
+                    포트폴리오 보기
+                </a>
+                <a href="#guide" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-6 py-2.5 rounded text-xs font-medium transition border border-zinc-800">
+                    의뢰 및 문의
+                </a>
             </div>
-        </section>
+        </div>
+        <!-- Subtle Ambient Gradient -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(16,185,129,0.08),transparent_50%)]"></div>
+    </section>
 
-        <!-- 브랜드 스토리 (About) -->
-        <section id="about">
-            <div class="container id-link">
-                <div class="about-grid">
-                    <div class="about-text">
-                        <h2 style="font-size: 1.2rem; color: var(--accent); margin-bottom: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">Real Live Experience</h2>
-                        <h3>현장 중심의 설계,<br>타협하지 않는 사운드 퀄리티</h3>
-                        <p>수많은 라이브 무대 경험과 장기간 축적된 필드 노하우를 바탕으로 연주자가 오직 연주에만 몰입할 수 있는 완벽한 구동 안정성을 보장합니다.</p>
-                        <p>페달보드는 단순히 이펙터를 일렬로 배치하고 선을 묶는 작업이 아닙니다. 복잡한 임피던스 매칭, 노이즈 유입 경로 차단, 직관적인 연주 동선까지 완벽하게 계산되어야 하는 정밀한 오디오 엔지니어링 작업입니다.</p>
-                        <div class="about-highlight">
-                            <h4>뮤지컴랩 EFX 시리즈 전문 마스터 빌더</h4>
-                            <p style="font-size: 0.95rem; margin-bottom: 0;">스플릿 루프 구조의 완벽한 최적화, 정밀한 MIDI 매핑, 복잡한 스테레오 시그널 루팅까지 EFX 스위처가 가진 잠재력을 100% 끌어내어 스마트한 하이엔드 시스템을 완성합니다.</p>
-                        </div>
-                    </div>
-                    <div class="about-visual">
-                        <!-- 회로 형태의 깔끔한 인프라 느낌을 주기 위한 임시 SVG 아이콘 -->
-                        <svg class="circuit-icon" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
-                            <path d="M7 2v4M17 2v4M2 12h4M18 12h4M7 22v-4M17 22v-4"></path>
-                            <path d="M11 8H9v4h4v2H9"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Showroom (Portfolio) Section -->
+    <section id="showroom" class="py-24 max-w-6xl mx-auto px-6">
+        <div class="mb-12">
+            <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">Showroom</h2>
+            <p class="text-2xl font-bold text-white tracking-tight">최근 작업물</p>
+        </div>
 
-        <!-- 핵심 서비스 (Services) -->
-        <section id="services">
-            <div class="container">
-                <h2 class="section-title">Our <span>Services</span></h2>
-                <div class="services-grid">
-                    <!-- 서비스 1 -->
-                    <div class="service-card">
-                        <div class="service-icon">⚡</div>
-                        <h3>EFX 스위처 시스템 빌드</h3>
-                        <p>Musicom Lab EFX 시리즈 스위처를 중심으로 한 마스터급 빌드입니다. 복잡한 멀티/스플릿 루프 구조 설계, 미디 채널 매핑 및 스테레오 구조 설계를 통해 단 한 번의 밟음으로 공간감과 드라이브 톤을 완벽하게 동기화합니다.</p>
-                        <div class="service-tags">
-                            <span>EFX-10D / MKVI</span>
-                            <span>Split Loop Mapping</span>
-                            <span>MIDI Matrix</span>
-                        </div>
-                    </div>
-                    <!-- 서비스 2 -->
-                    <div class="service-card">
-                        <div class="service-icon">🔌</div>
-                        <h3>프리미엄 커스텀 케이블</h3>
-                        <p>톤 로스(Tone Loss) 및 하울링 노이즈를 제로에 가깝게 줄이기 위해 최고급 Mogami 오디오 케이블과 정밀 가공된 Squareplug 커넥터를 조합하여 보드 핏에 1mm 단위로 정확하게 맞는 커스텀 DC/Patch/MIDI 케이블을 직접 납땜 제작합니다.</p>
-                        <div class="service-tags">
-                            <span>Mogami Cable</span>
-                            <span>Squareplug</span>
-                            <span>Custom Length Custom Soldering</span>
-                        </div>
-                    </div>
-                    <!-- 서비스 3 -->
-                    <div class="service-card">
-                        <div class="service-icon">🛠️</div>
-                        <h3>언더보드 레이아웃 셋업</h3>
-                        <p>격렬한 무대 위 움직임에도 이펙터가 이탈하지 않도록 최고 강도의 듀얼락 고정을 기반으로 설계합니다. 보드 뒷면(언더보드)의 전원선과 시그널선을 완벽하게 분리 절연하여 깔끔한 외관은 물론 상호 유도 노이즈까지 원천 차단합니다.</p>
-                        <div class="service-tags">
-                            <span>Dual-Lock Fixing</span>
-                            <span>Under-board Neat Cable Routing</span>
-                            <span>Power Isolation</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 포트폴리오 쇼룸 (Portfolio) -->
-        <section id="portfolio">
-            <div class="container">
-                <h2 class="section-title">TrueBoard <span>Showroom</span></h2>
-                <div class="portfolio-grid">
-                    <!-- 포트폴리오 1 -->
-                    <div class="portfolio-item">
-                        <div class="item-img">[ 프리미엄 EFX 시스템 세팅 예시 사진 ]</div>
-                        <div class="portfolio-overlay">
-                            <h4>EFX-10D 프리미엄 스테레오 시스템 빌드</h4>
-                            <p>공간계의 질감을 다이내믹하게 극대화하기 위해 듀얼 Tonex 인프라와 Strymon 타임라인/빅스카이를 루프 후단에 매핑한 무결점 하이엔드 라이브 보드.</p>
-                            <div class="routing-chain">Loop 1-6 Basic Chain → Loop 7/8 Stereo Send/Return → Dual Tonex Simulation</div>
-                        </div>
-                    </div>
-                    <!-- 포트폴리오 2 -->
-                    <div class="portfolio-item">
-                        <div class="item-img">[ 정밀 언더보드 배선 예시 사진 ]</div>
-                        <div class="portfolio-overlay">
-                            <h4>언더보드 3D 아이솔레이션 배선 정리</h4>
-                            <p>전원 노이즈 유입 차단을 위해 파워 서플라이 DC 라인과 프리미엄 패치 케이블 라인의 높낮이 및 교차각을 완전히 제어하여 정밀 빌드한 후면 구조.</p>
-                            <div class="routing-chain">Mogami 2319 Wire × Squareplug SP400 low-profile design</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 작업 프로세스 (Process) -->
-        <section id="process">
-            <div class="container">
-                <h2 class="section-title">Our <span>Process</span></h2>
-                <div class="process-steps">
-                    <div class="step-card">
-                        <div class="step-num">01</div>
-                        <h3>1:1 심층 상담</h3>
-                        <p>연주자의 시그니처 음악 스타일, 사용 페달 목록, 무대 운용 환경을 체계적으로 분석합니다.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-num">02</div>
-                        <h3>디지털 레이아웃 설계</h3>
-                        <p>보드 사이즈에 맞춰 최적의 공간 배치 및 효율적인 이펙터 시그널 루팅 가안을 수립합니다.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-num">03</div>
-                        <h3>정밀 빌드 & 솔더링</h3>
-                        <p>최고급 자재를 사용하여 100% 수작업으로 정밀 커스텀 케이블을 제작하고 튼튼하게 고정 배선합니다.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-num">04</div>
-                        <h3>완성도 스트레스 테스트</h3>
-                        <p>현장 라이브 수준의 가혹한 환경을 상정하여 톤 로스 유무와 시그널 노이즈 연동 여부를 완벽히 체킹 후 안심 출고합니다.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 푸터 및 컨택트 영역 -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-info">
-                    <h2>TrueBoard Lab</h2>
-                    <p>트루보드랩은 무대 위 연주자의 신뢰를 가장 가치 있게 여깁니다. <br>단 하나의 연결부도 방심하지 않는 꼼꼼함으로 당신만의 유니크한 시그니처 사운드를 빈틈없이 현실로 구축해 드립니다.</p>
-                    
-                    <div class="biz-details">
-                        <strong>상호명 :</strong> 트루보드랩 (TrueBoard Lab) <br>
-                        <strong>소재지 :</strong> 전북특별자치도 전주시 덕진구 송천동2가 <br>
-                        <strong>주요서비스 :</strong> 프리미엄 오디오 기기 커스텀 세팅 / 페달보드 라우팅 및 케이블 커스텀 빌드 <br>
-                        <span style="font-size: 0.8rem; color: #555;">* 세부 작업실 방문 및 상담은 예약제로 운영되오니 하단 채널로 먼저 문의 주시기 바랍니다.</span>
-                    </div>
-                </div>
-                
-                <div class="footer-contact">
-                    <div class="contact-box">
-                        <p>현재 소유하고 계신 [이펙터 목록 / 보드 사이즈 / 원하시는 루팅 방향]을 정리해서 보내주시면 훨씬 빠르고 명확한 견적 상담이 가능합니다.</p>
-                        <a href="#" target="_blank" class="btn-kakao">카카오톡 채널로 실시간 문의</a>
-                        <!-- 당근마켓 연동을 위한 전용 스페이스 -->
-                        <a href="#" target="_blank" class="btn-daangn">당근 동네 업체로 문의하기</a>
-                    </div>
-                </div>
-            </div>
+        <!-- Gallery Grid (사진을 넣으실 수 있는 공간입니다) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <div class="copyright">
-                &copy; 2026 TrueBoard Lab. All Rights Reserved. Powered by High-End Audio Engineering.
+            <!-- Item 1 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-4 overflow-hidden relative flex items-center justify-center text-zinc-700 group-hover:border-zinc-700 transition">
+                    <!-- 실제 이미지를 넣으실 때는 아래 SVG 대신 <img src="이미지경로" class="w-full h-full object-cover"> 를 넣으시면 됩니다 -->
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                <h3 class="text-sm font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-1">Midi Control Switcher System</h3>
+                <p class="text-zinc-500 text-xs font-light">루프 스위처 기반의 다기능 미디 매핑 및 라우팅 최적화 셋업</p>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-4 overflow-hidden relative flex items-center justify-center text-zinc-700 group-hover:border-zinc-700 transition">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                <h3 class="text-sm font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-1">Modern Worship Stereo Rig</h3>
+                <p class="text-zinc-500 text-xs font-light">공간계 이펙터 프리셋 매칭 및 실전 지향형 앰비언트 사운드 셋업</p>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="group cursor-pointer">
+                <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-4 overflow-hidden relative flex items-center justify-center text-zinc-700 group-hover:border-zinc-700 transition">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                <h3 class="text-sm font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-1">Compact Hybrid Board</h3>
+                <p class="text-zinc-500 text-xs font-light">멀티 이펙터와 개별 페달의 동시 구동을 위한 고효율 직렬 레이아웃</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Standards Section -->
+    <section id="standards" class="bg-zinc-900 py-20 border-t border-b border-zinc-900">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="mb-12 text-center md:text-left">
+                <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">Our Standards</h2>
+                <p class="text-xl font-bold text-white tracking-tight">TrueBoard의 빌드 기준</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Standard 1 -->
+                <div class="border-l border-zinc-800 pl-4">
+                    <h4 class="text-sm font-bold text-zinc-200 mb-2">미디 최적화 & 구조적 설계</h4>
+                    <p class="text-zinc-400 text-xs font-light leading-relaxed">
+                        루프 스위처와 MIDI 제어 메커니즘에 대한 명확한 분석을 바탕으로, 복잡한 신호 체계 안에서도 오작동 없는 직관적인 레이아웃을 구현합니다.
+                    </p>
+                </div>
+                <!-- Standard 2 -->
+                <div class="border-l border-zinc-800 pl-4">
+                    <h4 class="text-sm font-bold text-zinc-200 mb-2">전반적인 장비 라벨링 일치</h4>
+                    <p class="text-zinc-400 text-xs font-light leading-relaxed">
+                        모든 DC 라인, 커스텀 패치 케이블뿐만 아니라 루프 스위처 채널과 개별 이펙터 상단까지 전용 라벨링 작업을 적용하여 무대 위에서의 가시성과 유지보수 편의를 극대화합니다.
+                    </p>
+                </div>
+                <!-- Standard 3 -->
+                <div class="border-l border-zinc-800 pl-4">
+                    <h4 class="text-sm font-bold text-zinc-200 mb-2">신뢰할 수 있는 하드웨어 마감</h4>
+                    <p class="text-zinc-400 text-xs font-light leading-relaxed">
+                        Mogami, Canare, Squareplug, Kobiconn 등 검증된 자재를 기반으로 프리미엄 땜납(Kester No-Clean)과 전문 장비(Hakko FX-888D)를 사용하여 모든 접점을 견고하게 마감합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simplified Guide / Pricing Section -->
+    <section id="guide" class="py-24 max-w-4xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">Service Guide</h2>
+            <p class="text-2xl font-bold text-white tracking-tight">의뢰 및 작업 프로세스</p>
+            <p class="text-zinc-500 text-xs font-light mt-2">TrueBoard는 개별 장비 구성에 맞춘 1:1 커스텀 상담을 통해 최종 견적을 확정합니다.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-6 mb-10">
+            <!-- Price Card 1 -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
+                <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-wider">Setup Minimum</span>
+                <h3 class="text-base font-bold text-zinc-200 mt-1 mb-4">페달보드 시스템 구축 공임</h3>
+                <ul class="text-xs text-zinc-400 space-y-2 font-light">
+                    <li class="flex justify-between"><span>• 직렬 보드 기본 구성</span><span class="text-zinc-200 font-medium">100,000원 ~</span></li>
+                    <li class="flex justify-between"><span>• 스위처/미디 보드 복합 구성</span><span class="text-zinc-200 font-medium">200,000원 ~</span></li>
+                </ul>
+                <p class="text-[11px] text-zinc-500 mt-4 font-light border-t border-zinc-800/60 pt-3">
+                    ※ 페달 기어 개수 및 멀티이펙터/펑션 장비 포함 여부, 케이블 총길이에 따라 공임이 변동될 수 있습니다. (잡자재비 포함)
+                </p>
+            </div>
+
+            <!-- Price Card 2 -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
+                <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-wider">Education Sessions</span>
+                <h3 class="text-base font-bold text-zinc-200 mt-1 mb-4">스위처 및 MIDI 컨트롤 교육</h3>
+                <ul class="text-xs text-zinc-400 space-y-2 font-light">
+                    <li class="flex justify-between"><span>• 1:1 맞춤형 세션 (1회)</span><span class="text-zinc-200 font-medium">100,000원</span></li>
+                </ul>
+                <p class="text-[11px] text-zinc-500 mt-4 font-light border-t border-zinc-800/60 pt-3 text-left">
+                    기본 미디 신호 개념부터 본인의 플레이 스타일에 맞춘 레이아웃 설계 및 직접 세팅 가이드까지 포괄적으로 교육합니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- Cable Option Note -->
+        <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-lg p-5 text-xs text-zinc-400 font-light space-y-2">
+            <h4 class="font-bold text-zinc-200 text-xs">케이블 단품 및 옵션 제작 안내</h4>
+            <p class="text-zinc-500 leading-relaxed text-[11px]">
+                보드 셋업 외에도 외장 악기/마이크 연결용 케이블(XLR, Instrument), 맞춤형 패치/DC 케이블 단품 제작도 상시 가능합니다.<br>
+                (암페어·볼티지 더블러, 스플릿 DC, 센터 플러스 변환 및 TRS 모디파이 등 다양한 미디/전원 규격 케이블 대응 가능)
+            </p>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="text-center mt-12">
+            <p class="text-xs text-zinc-400 mb-4 font-light">소지하고 계신 장비 목록 및 원하시는 보드 레이아웃을 말씀해 주시면 상세히 안내해 드립니다.</p>
+            <a href="#" class="inline-block bg-white hover:bg-zinc-200 text-zinc-950 px-8 py-3 rounded text-xs font-bold transition">
+                상담 및 견적 문의하기
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-950 text-zinc-600 text-[11px] py-12 border-t border-zinc-900">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <p class="font-bold text-zinc-400 text-xs mb-0.5">TrueBoard System Design</p>
+                <p class="font-light">논리적인 설계와 정밀한 마감으로 완성하는 페달보드 시스템 솔루션</p>
+            </div>
+            <div class="text-left sm:text-right font-light">
+                <p>© 2026 TrueBoard. All rights reserved.</p>
             </div>
         </div>
     </footer>
