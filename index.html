@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrueBoard Lab | 페달보드 시스템 커스텀 빌드 & 솔루션</title>
-    <!-- 파비콘 설정 -->
     <link rel="icon" href="TrueBoard_Lab_Logo.png">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,14 +17,28 @@
             font-family: 'Noto Sans KR', sans-serif; 
             letter-spacing: -0.02em; 
         }
+        /* 슬라이더 화살표 버튼의 호버 효과를 위한 추가 스타일 */
+        #showroom .slider-btn:hover {
+            color: #34d399; /* emerald-400 */
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 antialiased">
 
+    <div id="modal" class="fixed inset-0 z-[100] hidden bg-black/90 flex items-center justify-center p-6" onclick="closeModal()">
+        <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl max-w-2xl w-full cursor-default shadow-2xl" onclick="event.stopPropagation()">
+            <div id="modal-content" class="text-center">
+                <img id="modal-img" src="" alt="상세 이미지" class="w-full aspect-video object-cover rounded mb-6 border border-zinc-800">
+                <h3 id="modal-title" class="text-2xl font-bold mb-4 text-white"></h3>
+                <p id="modal-desc" class="text-zinc-400 text-sm leading-relaxed mb-8"></p>
+                <button onclick="closeModal()" class="px-8 py-3 bg-white text-zinc-950 rounded text-xs font-bold hover:bg-zinc-200 transition">닫기</button>
+            </div>
+        </div>
+    </div>
+
     <header class="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900">
         <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="#home" class="flex items-center gap-2 text-lg font-black tracking-wider uppercase text-white hover:text-emerald-400 transition">
-                <!-- 로고 이미지 추가 -->
                 <img src="TrueBoard_Lab_Logo.png" alt="TrueBoard Logo" class="h-8 w-auto">
                 TrueBoard Lab
             </a>
@@ -64,34 +77,48 @@
         </div>
     </section>
 
-    <!-- (이하 나머지 섹션은 기존과 동일) -->
     <section id="showroom" class="py-48 max-w-6xl mx-auto px-6">
         <div class="mb-20 text-center">
             <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3">Showroom</h2>
             <p class="text-3xl font-extrabold text-white tracking-tight">최근 작업물</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            <div class="group cursor-pointer text-center">
-                <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-6 overflow-hidden relative group-hover:border-zinc-700 transition shadow-lg">
-                    <img src="TrueBoard_Lab_Portfolio1.png" alt="Midi Control Switcher System" class="w-full h-full object-cover">
+
+        <div class="relative w-full overflow-hidden px-12 md:px-16">
+            <button onclick="moveSlide(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 slider-btn text-zinc-600 hover:text-white transition text-4xl md:text-5xl font-black">❮</button>
+            <button onclick="moveSlide(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 slider-btn text-zinc-600 hover:text-white transition text-4xl md:text-5xl font-black">❯</button>
+
+            <div id="slide-track" class="flex transition-transform duration-500 ease-in-out gap-8 md:gap-12">
+                <div class="min-w-full md:min-w-[calc(33.333%-2rem)] cursor-pointer group" onclick="openModal('TrueBoard_Lab_Portfolio1.png', 'Midi Control Switcher System', '루프 스위처 기반의 다기능 미디 매핑 및 라우팅 최적화 셋업. 하이엔드 라우팅 설계를 통해 신호 손실을 최소화합니다.')">
+                    <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-6 overflow-hidden relative group-hover:border-zinc-700 transition shadow-lg">
+                        <img src="TrueBoard_Lab_Portfolio1.png" alt="Midi Control Switcher System" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-base font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-2">Midi Control Switcher System</h3>
+                        <p class="text-zinc-500 text-xs font-light px-2 leading-relaxed">루프 스위처 기반의 다기능 미디 매핑 및 라우팅 최적화 셋업</p>
+                    </div>
                 </div>
-                <h3 class="text-base font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-2">Midi Control Switcher System</h3>
-                <p class="text-zinc-500 text-xs font-light px-2 leading-relaxed">루프 스위처 기반의 다기능 미디 매핑 및 라우팅 최적화 셋업</p>
-            </div>
-            <div class="group cursor-pointer text-center">
-                <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-6 overflow-hidden relative flex items-center justify-center text-zinc-700 group-hover:border-zinc-700 transition shadow-lg">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+
+                <div class="min-w-full md:min-w-[calc(33.333%-2rem)] cursor-pointer group" onclick="openModal('https://via.placeholder.com/600x400?text=Modern+Worship+Rig', 'Modern Worship Stereo Rig', '공간계 이펙터 프리셋 매칭 및 실전 지향형 앰비언트 사운드 셋업입니다. 광활한 공간감을 위한 스테레오 라우팅을 구현했습니다.')">
+                    <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-6 overflow-hidden relative flex items-center justify-center text-zinc-700 group-hover:border-zinc-700 transition shadow-lg">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-base font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-2">Modern Worship Stereo Rig</h3>
+                        <p class="text-zinc-500 text-xs font-light px-2 leading-relaxed">공간계 이펙터 프리셋 매칭 및 실전 지향형 앰비언트 사운드 셋업</p>
+                    </div>
                 </div>
-                <h3 class="text-base font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-2">Modern Worship Stereo Rig</h3>
-                <p class="text-zinc-500 text-xs font-light px-2 leading-relaxed">공간계 이펙터 프리셋 매칭 및 실전 지향형 앰비언트 사운드 셋업</p>
-            </div>
-            <div class="group cursor-pointer text-center">
-                <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-6 overflow-hidden relative flex items-center justify-center text-zinc-700 group-hover:border-zinc-700 transition shadow-lg">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+
+                <div class="min-w-full md:min-w-[calc(33.333%-2rem)] cursor-pointer group" onclick="openModal('https://via.placeholder.com/600x400?text=Compact+Hybrid+Board', 'Compact Hybrid Board', '멀티 이펙터와 개별 페달의 동시 구동을 위한 고효율 직렬 레이아웃입니다. 이동성을 고려한 최적의 사이즈 셋업.')">
+                    <div class="aspect-video bg-zinc-900 rounded-lg border border-zinc-800 mb-6 overflow-hidden relative flex items-center justify-center text-zinc-700 group-hover:border-zinc-700 transition shadow-lg">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-base font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-2">Compact Hybrid Board</h3>
+                        <p class="text-zinc-500 text-xs font-light px-2 leading-relaxed">멀티 이펙터와 개별 페달의 동시 구동을 위한 고효율 직렬 레이아웃</p>
+                    </div>
                 </div>
-                <h3 class="text-base font-bold text-zinc-200 group-hover:text-emerald-400 transition mb-2">Compact Hybrid Board</h3>
-                <p class="text-zinc-500 text-xs font-light px-2 leading-relaxed">멀티 이펙터와 개별 페달의 동시 구동을 위한 고효율 직렬 레이아웃</p>
-            </div>
+                
+                </div>
         </div>
     </section>
 
@@ -153,7 +180,8 @@
         </div>
         <div class="text-center mt-16">
             <p class="text-sm text-zinc-400 mb-6 font-light">소지하고 계신 장비 목록 및 원하시는 보드 레이아웃을 말씀해 주시면 상세히 안내해 드립니다.</p>
-            <a href="#" class="inline-block bg-white hover:bg-zinc-200 text-zinc-950 px-10 py-4 rounded text-xs font-bold transition shadow-md">상담 및 견적 문의하기</a>
+            <a href="https://open.kakao.com/o/sDeoWr0g" target="_blank" rel="noopener noreferrer" class="inline-block bg-white hover:bg-zinc-200 text-zinc-950 px-10 py-4 rounded text-xs font-bold transition shadow-md">
+    상담 및 견적 문의하기</a>
         </div>
     </section>
 
@@ -168,6 +196,79 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // 슬라이더 기능
+        let currentSlide = 0;
+        
+        function updateSlidePosition() {
+            const track = document.getElementById('slide-track');
+            const items = track.querySelectorAll('#slide-track > div');
+            const totalItems = items.length;
+            const visibleItems = window.innerWidth >= 768 ? 3 : 1;
+            const maxSlide = totalItems - visibleItems;
+            
+            // maxSlide가 0보다 작을 수 있음 (슬라이더를 채우지 못할 때)
+            const safeMaxSlide = Math.max(0, maxSlide);
+            currentSlide = Math.min(currentSlide, safeMaxSlide);
+            
+            let percentageToTranslate;
+            if (visibleItems === 3) {
+                // PC: 3개씩 보일 때 (gap이 포함된 너비를 계산해야 함)
+                const itemWidth = 100 / visibleItems;
+                // gap을 고려한 정확한 너비 계산은 CSS calc()로 했으므로,
+                // 스크립트에서는 전체의 1/3씩 이동하는 것으로 근사합니다.
+                // gap이 일정하므로 translateX의 백분율로 충분합니다.
+                percentageToTranslate = currentSlide * itemWidth;
+            } else {
+                // 모바일: 1개씩 보일 때
+                percentageToTranslate = currentSlide * 100;
+            }
+            
+            track.style.transform = `translateX(-${percentageToTranslate}%)`;
+        }
+        
+        function moveSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) {
+                currentSlide = 0;
+            } else {
+                const track = document.getElementById('slide-track');
+                const items = track.querySelectorAll('#slide-track > div');
+                const visibleItems = window.innerWidth >= 768 ? 3 : 1;
+                if (currentSlide > items.length - visibleItems) {
+                    currentSlide = items.length - visibleItems;
+                }
+            }
+            updateSlidePosition();
+        }
+        
+        // 브라우저 리사이즈 시 슬라이더 위치 업데이트
+        window.addEventListener('resize', updateSlidePosition);
+        
+        // 초기 로드 시 슬라이더 위치 설정
+        window.addEventListener('DOMContentLoaded', updateSlidePosition);
+
+        // 모달 기능
+        function openModal(img, title, desc) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-desc');
+            
+            modalImg.src = img;
+            modalImg.alt = title;
+            modalTitle.innerText = title;
+            modalDesc.innerText = desc;
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('hidden');
+        }
+    </script>
 
 </body>
 </html>
